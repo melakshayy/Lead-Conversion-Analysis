@@ -16,7 +16,7 @@
 | Repeated attempts have steeply diminishing returns | 1-3 attempts: **74.5** conversions per 1,000 calls; 4+ attempts: **10.9** (about 7x worse), yet they take **48%** of all calls |
 | A simple score prioritises well | Logistic regression (AUC **0.80**): top decile converts at **49.5%** vs 11.3% baseline; top 3 deciles capture **72.9%** of conversions |
 
-**Business recommendation:** cap repeat attempts at about 3, route warm and cellular leads first, and rank the daily call list by model score.
+**Business recommendation:** rank the daily call list by model score and cap repeat attempts. The dashboard's policy simulator replays the data: calling the top 50% of leads with at most 5 attempts keeps about 80% of sales (3,726 of 4,639) with about 63% fewer calls (39,492 vs 105,735). This is a historical replay, so test it against a control group before rollout.
 
 ## Method
 1. `analysis.sql` - funnel, segment and effort-vs-return queries (SQLite).

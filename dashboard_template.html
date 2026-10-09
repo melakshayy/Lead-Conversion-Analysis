@@ -1,86 +1,96 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Interactive Lead Conversion Dashboard</title>
+<title>Lead Conversion Policy Simulator | Lakshay</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f7f8fa;--card:#fff;--text:#1b2433;--muted:#5d6878;--line:#e3e7ee;--a:#1f3864;--b:#0f9d8a;--c:#d9822b}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f141c;--card:#18202c;--text:#e8edf5;--muted:#9aa6b8;--line:#2a3445;--a:#7ea6e8;--b:#3fc4af;--c:#f0a35e}}
-:root[data-theme="dark"]{--bg:#0f141c;--card:#18202c;--text:#e8edf5;--muted:#9aa6b8;--line:#2a3445;--a:#7ea6e8;--b:#3fc4af;--c:#f0a35e}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#eef1f4;--surface:#fff;--ink:#0e1b2c;--muted:#5a6a7c;--line:#d9dfe6;--keep:#0b6e8a;--cut:#c8553d;--soft:#e3eef2}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0b1420;--surface:#121e2d;--ink:#e8eef5;--muted:#93a3b6;--line:#243447;--keep:#4fb3cf;--cut:#e8806a;--soft:#16303b}}
+:root[data-theme="dark"]{--bg:#0b1420;--surface:#121e2d;--ink:#e8eef5;--muted:#93a3b6;--line:#243447;--keep:#4fb3cf;--cut:#e8806a;--soft:#16303b}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-main{max-width:1100px;margin:0 auto;padding:18px 14px 40px}
-h1{font-size:1.45rem;margin:0 0 2px}.sub{color:var(--muted);margin:0 0 14px;font-size:.88rem}
-.bar,.kpi,.card{background:var(--card);border:1px solid var(--line);border-radius:12px}
-.bar{display:flex;flex-wrap:wrap;gap:10px;padding:12px;margin-bottom:12px;align-items:end}
-label{display:flex;flex-direction:column;font-size:.72rem;color:var(--muted);gap:3px}
-select,button,input{font:inherit;font-size:.85rem;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
-button{cursor:pointer}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
-.kpi{padding:12px 14px}.kpi b{display:block;font-size:1.5rem;color:var(--a)}.kpi span{color:var(--muted);font-size:.78rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
-.card{padding:14px}.card h2{font-size:1rem;margin:0 0 2px}.card p{margin:0 0 8px;color:var(--muted);font-size:.78rem}
-.box{position:relative;height:250px}
-.call{border-left:4px solid var(--b);background:var(--card);border-radius:8px;padding:14px 16px;margin-top:12px;font-size:.92rem;line-height:1.5}
-.call input{width:min(420px,100%);padding:0}
-.id{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px}
-.id .who{font-weight:600;font-size:.9rem}.id a{color:var(--a);font-size:.82rem;text-decoration:none}
-.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:3px 10px 3px 4px;font-size:.74rem;color:var(--text)}
-.tag i{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-style:normal;font-size:.62rem;font-weight:700;color:#fff}
-footer{color:var(--muted);font-size:.74rem;margin-top:14px}
-</style></head><body><main>
-<h1>Interactive Lead Conversion Dashboard</h1>
-<p class="sub">UCI Bank Marketing telemarketing campaign - filter the leads, switch the breakdown, and size your call list</p>
-<div class="id"><span class="who">Built by Lakshay</span><a href="https://linkedin.com/in/melakshay" target="_blank" rel="noopener">LinkedIn</a><a href="https://github.com/melakshayy/Lead-Conversion-Analysis" target="_blank" rel="noopener">GitHub repo</a>
-<span class="tag"><i style="background:#3776ab">Py</i>Python</span><span class="tag"><i style="background:#0f7aa8">SQL</i>SQL (SQLite)</span><span class="tag"><i style="background:#f7931e">ML</i>scikit-learn</span><span class="tag"><i style="background:#ff6384">JS</i>Chart.js</span><span class="tag"><i style="background:#24292f">GH</i>GitHub Pages</span></div>
-<div class="bar" id="bar"></div>
-<div class="kpis" id="kpis"></div>
-<div class="grid">
-<div class="card"><h2>Conversion by <span id="dimname"></span></h2><p>Conversion % within the current filter (groups under 30 leads hidden)</p><div class="box"><canvas id="c1"></canvas></div></div>
-<div class="card"><h2>Diminishing returns on calls</h2><p>Conversions per 1,000 calls, by number of attempts</p><div class="box"><canvas id="c2"></canvas></div></div>
-<div class="card"><h2>Lead score lift</h2><p>Cumulative % of conversions captured, leads ranked by out-of-fold model score</p><div class="box"><canvas id="c3"></canvas></div></div>
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+.w{max-width:1040px;margin:0 auto;padding:0 18px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;padding:22px 0 18px}
+header b{font:600 1.15rem "Newsreader",Georgia,serif}header span{color:var(--muted);margin-left:8px;font-size:.88rem}
+nav a{color:var(--keep);text-decoration:none;font-weight:500;margin-left:18px;font-size:.88rem}nav a:hover{text-decoration:underline}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--keep);outline-offset:2px}
+.hero{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--keep);border-radius:6px;padding:30px 30px 26px}
+h1{font:500 clamp(1.55rem,3.3vw,2.45rem)/1.22 "Newsreader",Georgia,serif;margin:0 0 10px;max-width:30em}
+h1 .k{color:var(--keep)}h1 .c{color:var(--cut)}
+.lede{color:var(--muted);margin:0 0 22px;max-width:62ch;font-size:.9rem}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px 36px;align-items:end}
+.ctl label{display:block;font-weight:500;font-size:.88rem}.ctl label em{font-style:normal;color:var(--keep);font-weight:600;float:right}
+input[type=range]{width:100%;accent-color:var(--keep);margin:8px 0 0}
+button{font:500 .85rem "IBM Plex Sans",sans-serif;color:var(--keep);background:transparent;border:1px solid var(--keep);border-radius:4px;padding:8px 14px;cursor:pointer;justify-self:start}
+button:hover{background:var(--soft)}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;margin-top:14px;overflow:hidden}
+.m{background:var(--surface);padding:18px 20px}.mh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.mh b{font-weight:600}.mh span{font-size:.8rem;color:var(--muted)}.mh span.d{color:var(--keep);font-weight:600}
+.bl{display:grid;grid-template-columns:50px 1fr 64px;align-items:center;gap:8px;margin:5px 0;font-size:.8rem}
+.bl i{font-style:normal;color:var(--muted)}.bl em{font-style:normal;text-align:right;font-weight:600}
+.tr{height:12px;background:var(--bg);border-radius:2px;overflow:hidden}.tr u{display:block;height:100%;transition:width .35s ease}
+.sec{margin:34px 0 12px}.sec h2{font:500 1.45rem "Newsreader",Georgia,serif;margin:0 0 4px}.sec p{margin:0;color:var(--muted);font-size:.88rem;max-width:64ch}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px}
+.cc{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px}
+.cc h3{font-size:.95rem;font-weight:600;margin:0}.cc p{font-size:.78rem;color:var(--muted);margin:2px 0 8px}
+.cc select{font:inherit;font-size:.8rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:3px 6px;margin-left:6px}
+.bx{position:relative;height:240px}
+.ev{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px 22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px 30px;font-size:.86rem}
+.ev h3{font-size:.9rem;margin:0 0 4px}.ev p{margin:0;color:var(--muted)}.ev a{color:var(--keep)}
+footer{color:var(--muted);font-size:.78rem;padding:18px 0 36px}
+</style></head><body><div class="w">
+<header><div><b>Lakshay</b><span>Sales analytics: SQL, Python, CRM pipeline</span></div><nav><a href="https://github.com/melakshayy/Lead-Conversion-Analysis" target="_blank" rel="noopener">Code and method</a><a href="https://linkedin.com/in/melakshay" target="_blank" rel="noopener">LinkedIn</a></nav></header>
+<section class="hero"><h1 id="head"></h1>
+<p class="lede">A replay of 41,176 real bank telemarketing leads. Leads are ranked by a model score, and any lead that needed more attempts than your cap is counted as a lost sale, so the estimate is conservative. Move the sliders to test a different policy.</p>
+<div class="ctl"><div><label for="p">Leads to call, best score first <em id="pv"></em></label><input type="range" id="p" min="5" max="100" step="5"></div>
+<div><label for="cap">Maximum attempts per lead <em id="cv"></em></label><input type="range" id="cap" min="1" max="11" step="1"></div>
+<button id="rec" type="button">Use recommended policy</button></div></section>
+<div class="res" id="res"></div>
+<div class="sec"><h2>Why the policy works</h2><p>Three patterns in the data drive the result. Each chart responds to your sliders.</p></div>
+<div class="cg">
+<div class="cc"><h3>Scoring finds the buyers early</h3><p>Share of all sales captured when you call the top leads first</p><div class="bx"><canvas id="c1"></canvas></div></div>
+<div class="cc"><h3>Late attempts rarely pay</h3><p>Sales per 1,000 calls by attempts needed. Coral bars fall past your cap.</p><div class="bx"><canvas id="c2"></canvas></div></div>
+<div class="cc"><h3>Who converts<select id="dim" aria-label="Group leads by"></select></h3><p>Conversion rate by group (groups of 100+ leads)</p><div class="bx"><canvas id="c3"></canvas></div></div>
 </div>
-<div class="call"><b>Call-list simulator:</b> work only the top <b id="pv">30</b>% of the filtered leads by score<br>
-<input type="range" id="pct" min="5" max="100" step="5" value="30"><div id="calltxt"></div></div>
-<footer>Project by Lakshay (linkedin.com/in/melakshay | github.com/melakshayy). Data: Moro, Cortez &amp; Rita (2014), UCI Machine Learning Repository, CC BY 4.0. Scores come from 5-fold cross-validated logistic regression that excludes call duration (leakage).</footer>
-</main>
+<div class="sec"><h2>Check my work</h2></div>
+<div class="ev"><div><h3>Data</h3><p>UCI Bank Marketing, 41,188 calls from a Portuguese bank campaign (Moro, Cortez and Rita, 2014; CC BY 4.0). 12 duplicates removed.</p></div>
+<div><h3>Model</h3><p>Logistic regression, AUC 0.80 on a hold-out set. Scores here are 5-fold cross-validated, so no lead is scored by a model that saw it. Call duration is excluded because it is only known after the call.</p></div>
+<div><h3>Limits</h3><p>This is a historical replay, not a live trial. A real rollout should be tested against a control group before any budget is moved.</p></div>
+<div><h3>Reproduce it</h3><p>SQL queries, Python code and clean data are in the <a href="https://github.com/melakshayy/Lead-Conversion-Analysis" target="_blank" rel="noopener">GitHub repository</a>. Built with Python, SQL, scikit-learn and Chart.js.</p></div></div>
+<footer>Built by Lakshay. linkedin.com/in/melakshay</footer></div>
 <script>
-const D=__DATA__,L=D.labels,R=D.rows;
-const KEYS=['job','contact','month','pout','age','att'];
-const NAMES={job:'Job',contact:'Channel',month:'Month',pout:'Previous outcome',age:'Age band',att:'Attempts'};
+const D=__DATA__,L=D.labels,R=D.rows,REC=D.rec,$=id=>document.getElementById(id);
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-const F={};let dim='job';
-const bar=document.getElementById('bar');
-bar.innerHTML=KEYS.map(k=>'<label>'+NAMES[k]+'<select id="f_'+k+'"><option value="">All</option>'+L[k].map((v,i)=>'<option value="'+i+'">'+v+'</option>').join('')+'</select></label>').join('')
-+'<label>Break down by<select id="dim">'+KEYS.map(k=>'<option value="'+k+'">'+NAMES[k]+'</option>').join('')+'</select></label><button id="reset">Reset</button>';
-KEYS.forEach(k=>document.getElementById('f_'+k).onchange=e=>{F[k]=e.target.value;draw()});
-document.getElementById('dim').onchange=e=>{dim=e.target.value;draw()};
-document.getElementById('pct').oninput=draw;
-document.getElementById('reset').onclick=()=>{KEYS.forEach(k=>{F[k]='';document.getElementById('f_'+k).value=''});draw()};
-const ax=()=>({ticks:{color:css('--muted')},grid:{color:css('--line')}});
-const mk=(id,type,cfg)=>new Chart(document.getElementById(id),{type,data:{labels:[],datasets:cfg},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:type==='line',labels:{color:css('--muted')}}},scales:{x:ax(),y:ax()}}});
-const c1=mk('c1','bar',[{data:[],backgroundColor:css('--a'),borderRadius:4}]);
-const c2=mk('c2','bar',[{data:[],backgroundColor:css('--c'),borderRadius:4}]);
-const c3=mk('c3','line',[{label:'Model',data:[],borderColor:css('--a'),backgroundColor:css('--a'),tension:.25},{label:'Random',data:[],borderColor:css('--muted'),borderDash:[5,5],pointRadius:0}]);
-c3.options.scales.y.min=0;c3.options.scales.y.max=100;
-const pc=(a,b)=>b?(100*a/b):0, fmt=n=>n.toLocaleString();
+const S=R.slice().sort((a,b)=>b[8]-a[8]),N=S.length;let TC=0,TS=0;S.forEach(r=>{TC+=r[6];TS+=r[7]});
+const lift=[0];{let k=0,c=0;for(let d=1;d<=20;d++){const e=Math.round(N*d/20);while(k<e){c+=S[k][7];k++}lift.push(+(100*c/TS).toFixed(1))}}
+const att=[];for(let a=1;a<=7;a++)att.push([0,0]);R.forEach(r=>{const i=Math.min(r[6],7)-1;att[i][0]+=r[6];att[i][1]+=r[7]});
+const KEYS=['job','contact','month','pout','age','att'],NAMES={job:'job',contact:'channel',month:'month',pout:'previous outcome',age:'age band',att:'attempts'};
+$('dim').innerHTML=KEYS.map(k=>'<option value="'+k+'">'+NAMES[k]+'</option>').join('');
+Chart.defaults.color=css('--muted');Chart.defaults.font.family='"IBM Plex Sans",system-ui,sans-serif';Chart.defaults.borderColor=css('--line');
+const base=(t,o)=>({type:t,data:{labels:[],datasets:[]},options:Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{border:{display:false}}}},o||{})});
+const c1=new Chart($('c1'),base('line',{plugins:{legend:{display:true,labels:{boxWidth:12}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:6,callback:(v,i)=>i*5+'%'}},y:{min:0,max:100,border:{display:false},ticks:{callback:v=>v+'%'}}}}));
+c1.data.labels=lift.map((_,i)=>i*5);
+const c2=new Chart($('c2'),base('bar'));c2.data.labels=att.map((_,i)=>i===6?'7+':String(i+1));
+const c3=new Chart($('c3'),base('bar',{indexAxis:'y',scales:{x:{border:{display:false},ticks:{callback:v=>v+'%'}},y:{grid:{display:false}}}}));
+const f0=n=>Math.round(n).toLocaleString();
+function sim(p,cap){const t=Math.round(N*p/100);let calls=0,sales=0;for(let i=0;i<t;i++){const c=S[i][6];calls+=Math.min(c,cap);if(c<=cap)sales+=S[i][7]}return{calls,sales}}
+const row=(lab,sub,t,v,f,d)=>{const m=Math.max(t,v)||1;return '<div class="m"><div class="mh"><b>'+lab+'</b><span class="'+(d?'d':'')+'">'+sub+'</span></div><div class="bl"><i>Today</i><div class="tr"><u style="width:'+100*t/m+'%;background:var(--muted)"></u></div><em>'+f(t)+'</em></div><div class="bl"><i>Policy</i><div class="tr"><u style="width:'+100*v/m+'%;background:var(--keep)"></u></div><em>'+f(v)+'</em></div></div>'};
 function draw(){
- const rows=R.filter(r=>KEYS.every((k,i)=>F[k]===undefined||F[k]===''||r[i]==F[k]));
- const n=rows.length,conv=rows.reduce((s,r)=>s+r[7],0),calls=rows.reduce((s,r)=>s+r[6],0);
- document.getElementById('kpis').innerHTML=[[fmt(n),'Leads in view'],[fmt(conv),'Conversions'],[pc(conv,n).toFixed(1)+'%','Conversion rate'],[fmt(calls),'Calls made'],[(1000*conv/(calls||1)).toFixed(1),'Conversions per 1,000 calls']].map(x=>'<div class="kpi"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('');
- document.getElementById('dimname').textContent=NAMES[dim];
- const di=KEYS.indexOf(dim),g=L[dim].map(()=>[0,0]);
- rows.forEach(r=>{g[r[di]][0]++;g[r[di]][1]+=r[7]});
- let items=L[dim].map((v,i)=>({v,n:g[i][0],r:pc(g[i][1],g[i][0])})).filter(x=>x.n>=30);
- if(dim==='job')items.sort((a,b)=>b.r-a.r);
- c1.data.labels=items.map(x=>x.v+' (n='+fmt(x.n)+')');c1.data.datasets[0].data=items.map(x=>+x.r.toFixed(2));c1.update();
- const a=L.att.map(()=>[0,0]);rows.forEach(r=>{a[r[5]][0]+=r[6];a[r[5]][1]+=r[7]});
- c2.data.labels=L.att.map(v=>v+' attempt(s)');c2.data.datasets[0].data=a.map(x=>+(1000*x[1]/(x[0]||1)).toFixed(1));c2.update();
- const s=rows.slice().sort((x,y)=>y[8]-x[8]);let cum=0,k=0,cd=[];
- for(let d=1;d<=10;d++){const end=Math.round(n*d/10);while(k<end){cum+=s[k][7];k++}cd.push(+pc(cum,conv).toFixed(1))}
- c3.data.labels=cd.map((_,i)=>'Top '+(i+1)*10+'%');c3.data.datasets[0].data=cd;c3.data.datasets[1].data=cd.map((_,i)=>(i+1)*10);c3.update();
- const p=+document.getElementById('pct').value;document.getElementById('pv').textContent=p;
- const t=Math.round(n*p/100),tc=s.slice(0,t).reduce((q,r)=>q+r[7],0);
- document.getElementById('calltxt').innerHTML=n?('Calling <b>'+fmt(t)+'</b> leads captures <b>'+pc(tc,conv).toFixed(1)+'%</b> of conversions at a <b>'+pc(tc,t).toFixed(1)+'%</b> conversion rate, compared with '+pc(conv,n).toFixed(1)+'% if you call everyone. Calls saved: <b>'+fmt(n-t)+'</b> leads.'):'No leads match these filters.';
+ const p=+$('p').value,cv=+$('cap').value,cap=cv>=11?1e9:cv,r=sim(p,cap);
+ const keep=100*r.sales/TS,cut=100*(1-r.calls/TC),e0=1000*TS/TC,e1=r.calls?1000*r.sales/r.calls:0;
+ $('pv').textContent=p+'%';$('cv').textContent=cv>=11?'No limit':cv;
+ $('head').innerHTML='Call the top <b>'+p+'%</b> of leads'+(cv>=11?' with no attempt limit':' and stop after <b>'+cv+' attempt'+(cv>1?'s':'')+'</b>')+': keep <b class="k">'+keep.toFixed(0)+'%</b> of sales with <b class="c">'+cut.toFixed(0)+'%</b> fewer calls.';
+ $('res').innerHTML=row('Calls made','saves '+f0(TC-r.calls),TC,r.calls,f0,0)+row('Sales','keeps '+f0(r.sales)+' of '+f0(TS),TS,r.sales,f0,0)+row('Sales per 1,000 calls',(e0?(e1/e0).toFixed(1):'0')+'x more efficient',e0,e1,v=>v.toFixed(1),1);
+ c1.data.datasets=[{label:'Calling in score order',data:lift,borderColor:css('--keep'),backgroundColor:css('--keep'),pointRadius:0,tension:.2,borderWidth:2.5},
+  {label:'Calling at random',data:lift.map((_,i)=>i*5),borderColor:css('--muted'),borderDash:[5,5],pointRadius:0,borderWidth:1.5},
+  {label:'Your policy',data:lift.map((v,i)=>i*5===p?v:null),borderColor:css('--cut'),backgroundColor:css('--cut'),pointRadius:7,showLine:false}];c1.update();
+ c2.data.datasets=[{data:att.map(x=>+(1000*x[1]/(x[0]||1)).toFixed(1)),backgroundColor:att.map((_,i)=>(i+1)>cap?css('--cut'):css('--keep'))}];c2.update();
+ const dim=$('dim').value,di=KEYS.indexOf(dim),g=L[dim].map(()=>[0,0]);R.forEach(x=>{g[x[di]][0]++;g[x[di]][1]+=x[7]});
+ const it=L[dim].map((v,i)=>({v,r:100*g[i][1]/(g[i][0]||1),n:g[i][0]})).filter(x=>x.n>=100).sort((a,b)=>b.r-a.r);
+ c3.data.labels=it.map(x=>x.v);c3.data.datasets=[{data:it.map(x=>+x.r.toFixed(1)),backgroundColor:css('--keep')}];c3.update();
 }
-draw();
+['p','cap'].forEach(i=>$(i).oninput=draw);$('dim').onchange=draw;
+$('rec').onclick=()=>{$('p').value=REC.p;$('cap').value=REC.cap;draw()};
+$('p').value=REC.p;$('cap').value=REC.cap;draw();
 </script></body></html>
