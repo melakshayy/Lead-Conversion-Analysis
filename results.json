@@ -1,0 +1,387 @@
+{
+ "overall": {
+  "leads": 41176.0,
+  "conversions": 4639.0,
+  "conv_rate_pct": 11.27
+ },
+ "by_poutcome": [
+  {
+   "segment": "success",
+   "leads": 1373,
+   "conversions": 894,
+   "conv_rate_pct": 65.11
+  },
+  {
+   "segment": "failure",
+   "leads": 4252,
+   "conversions": 605,
+   "conv_rate_pct": 14.23
+  },
+  {
+   "segment": "nonexistent",
+   "leads": 35551,
+   "conversions": 3140,
+   "conv_rate_pct": 8.83
+  }
+ ],
+ "by_contact": [
+  {
+   "segment": "cellular",
+   "leads": 26135,
+   "conversions": 3852,
+   "conv_rate_pct": 14.74
+  },
+  {
+   "segment": "telephone",
+   "leads": 15041,
+   "conversions": 787,
+   "conv_rate_pct": 5.23
+  }
+ ],
+ "by_month": [
+  {
+   "segment": "mar",
+   "leads": 546,
+   "conversions": 276,
+   "conv_rate_pct": 50.55
+  },
+  {
+   "segment": "apr",
+   "leads": 2631,
+   "conversions": 539,
+   "conv_rate_pct": 20.49
+  },
+  {
+   "segment": "may",
+   "leads": 13767,
+   "conversions": 886,
+   "conv_rate_pct": 6.44
+  },
+  {
+   "segment": "jun",
+   "leads": 5318,
+   "conversions": 559,
+   "conv_rate_pct": 10.51
+  },
+  {
+   "segment": "jul",
+   "leads": 7169,
+   "conversions": 648,
+   "conv_rate_pct": 9.04
+  },
+  {
+   "segment": "aug",
+   "leads": 6176,
+   "conversions": 655,
+   "conv_rate_pct": 10.61
+  },
+  {
+   "segment": "sep",
+   "leads": 570,
+   "conversions": 256,
+   "conv_rate_pct": 44.91
+  },
+  {
+   "segment": "oct",
+   "leads": 717,
+   "conversions": 315,
+   "conv_rate_pct": 43.93
+  },
+  {
+   "segment": "nov",
+   "leads": 4100,
+   "conversions": 416,
+   "conv_rate_pct": 10.15
+  },
+  {
+   "segment": "dec",
+   "leads": 182,
+   "conversions": 89,
+   "conv_rate_pct": 48.9
+  }
+ ],
+ "by_job": [
+  {
+   "segment": "student",
+   "leads": 875,
+   "conversions": 275,
+   "conv_rate_pct": 31.43
+  },
+  {
+   "segment": "retired",
+   "leads": 1718,
+   "conversions": 434,
+   "conv_rate_pct": 25.26
+  },
+  {
+   "segment": "unemployed",
+   "leads": 1014,
+   "conversions": 144,
+   "conv_rate_pct": 14.2
+  },
+  {
+   "segment": "admin.",
+   "leads": 10419,
+   "conversions": 1351,
+   "conv_rate_pct": 12.97
+  },
+  {
+   "segment": "management",
+   "leads": 2924,
+   "conversions": 328,
+   "conv_rate_pct": 11.22
+  },
+  {
+   "segment": "unknown",
+   "leads": 330,
+   "conversions": 37,
+   "conv_rate_pct": 11.21
+  },
+  {
+   "segment": "technician",
+   "leads": 6739,
+   "conversions": 730,
+   "conv_rate_pct": 10.83
+  },
+  {
+   "segment": "self-employed",
+   "leads": 1421,
+   "conversions": 149,
+   "conv_rate_pct": 10.49
+  },
+  {
+   "segment": "housemaid",
+   "leads": 1060,
+   "conversions": 106,
+   "conv_rate_pct": 10.0
+  },
+  {
+   "segment": "entrepreneur",
+   "leads": 1456,
+   "conversions": 124,
+   "conv_rate_pct": 8.52
+  },
+  {
+   "segment": "services",
+   "leads": 3967,
+   "conversions": 323,
+   "conv_rate_pct": 8.14
+  },
+  {
+   "segment": "blue-collar",
+   "leads": 9253,
+   "conversions": 638,
+   "conv_rate_pct": 6.9
+  }
+ ],
+ "by_contacts_band": [
+  {
+   "segment": "1",
+   "leads": 17634,
+   "conversions": 2299,
+   "conv_rate_pct": 13.04
+  },
+  {
+   "segment": "2",
+   "leads": 10568,
+   "conversions": 1211,
+   "conv_rate_pct": 11.46
+  },
+  {
+   "segment": "3",
+   "leads": 5340,
+   "conversions": 574,
+   "conv_rate_pct": 10.75
+  },
+  {
+   "segment": "4-5",
+   "leads": 4249,
+   "conversions": 369,
+   "conv_rate_pct": 8.68
+  },
+  {
+   "segment": "6+",
+   "leads": 3385,
+   "conversions": 186,
+   "conv_rate_pct": 5.49
+  }
+ ],
+ "by_age_band": [
+  {
+   "segment": "<=25",
+   "leads": 1665,
+   "conversions": 349,
+   "conv_rate_pct": 20.96
+  },
+  {
+   "segment": "26-35",
+   "leads": 14844,
+   "conversions": 1740,
+   "conv_rate_pct": 11.72
+  },
+  {
+   "segment": "36-45",
+   "leads": 12839,
+   "conversions": 1092,
+   "conv_rate_pct": 8.51
+  },
+  {
+   "segment": "46-55",
+   "leads": 8247,
+   "conversions": 717,
+   "conv_rate_pct": 8.69
+  },
+  {
+   "segment": "56-65",
+   "leads": 2963,
+   "conversions": 451,
+   "conv_rate_pct": 15.22
+  },
+  {
+   "segment": "65+",
+   "leads": 618,
+   "conversions": 290,
+   "conv_rate_pct": 46.93
+  }
+ ],
+ "by_duration_band": [
+  {
+   "segment": "<1 min",
+   "leads": 4284,
+   "conversions": 1,
+   "conv_rate_pct": 0.02
+  },
+  {
+   "segment": "1-3 min",
+   "leads": 16412,
+   "conversions": 563,
+   "conv_rate_pct": 3.43
+  },
+  {
+   "segment": "3-5 min",
+   "leads": 9278,
+   "conversions": 953,
+   "conv_rate_pct": 10.27
+  },
+  {
+   "segment": "5-10 min",
+   "leads": 7738,
+   "conversions": 1438,
+   "conv_rate_pct": 18.58
+  },
+  {
+   "segment": "10+ min",
+   "leads": 3464,
+   "conversions": 1684,
+   "conv_rate_pct": 48.61
+  }
+ ],
+ "effort": [
+  {
+   "attempts_group": "1-3 attempts",
+   "total_calls": 54790,
+   "conversions": 4084,
+   "conversions_per_1000_calls": 74.5
+  },
+  {
+   "attempts_group": "4+ attempts",
+   "total_calls": 50945,
+   "conversions": 555,
+   "conversions_per_1000_calls": 10.9
+  }
+ ],
+ "model": {
+  "auc": 0.802,
+  "top3_deciles_capture_pct": 72.9,
+  "top_decile_conv_pct": 49.51,
+  "baseline_pct": 11.27
+ },
+ "deciles": [
+  {
+   "decile": 1,
+   "leads": 1030,
+   "conversions": 510,
+   "conv_rate_pct": 49.51,
+   "cum_capture_pct": 44.0
+  },
+  {
+   "decile": 2,
+   "leads": 1029,
+   "conversions": 234,
+   "conv_rate_pct": 22.74,
+   "cum_capture_pct": 64.1
+  },
+  {
+   "decile": 3,
+   "leads": 1030,
+   "conversions": 102,
+   "conv_rate_pct": 9.9,
+   "cum_capture_pct": 72.9
+  },
+  {
+   "decile": 4,
+   "leads": 1029,
+   "conversions": 56,
+   "conv_rate_pct": 5.44,
+   "cum_capture_pct": 77.8
+  },
+  {
+   "decile": 5,
+   "leads": 1029,
+   "conversions": 55,
+   "conv_rate_pct": 5.34,
+   "cum_capture_pct": 82.5
+  },
+  {
+   "decile": 6,
+   "leads": 1030,
+   "conversions": 50,
+   "conv_rate_pct": 4.85,
+   "cum_capture_pct": 86.8
+  },
+  {
+   "decile": 7,
+   "leads": 1029,
+   "conversions": 51,
+   "conv_rate_pct": 4.96,
+   "cum_capture_pct": 91.2
+  },
+  {
+   "decile": 8,
+   "leads": 1030,
+   "conversions": 44,
+   "conv_rate_pct": 4.27,
+   "cum_capture_pct": 95.0
+  },
+  {
+   "decile": 9,
+   "leads": 1029,
+   "conversions": 30,
+   "conv_rate_pct": 2.92,
+   "cum_capture_pct": 97.6
+  },
+  {
+   "decile": 10,
+   "leads": 1029,
+   "conversions": 28,
+   "conv_rate_pct": 2.72,
+   "cum_capture_pct": 100.0
+  }
+ ],
+ "drivers_pos": {
+  "c__job_retired": 0.35,
+  "c__month_aug": 0.42,
+  "c__month_dec": 0.46,
+  "n__euribor3m": 0.57,
+  "n__cons_price_idx": 1.03,
+  "c__month_mar": 1.25
+ },
+ "drivers_neg": {
+  "n__emp_var_rate": -2.17,
+  "c__month_jun": -0.74,
+  "c__month_may": -0.64,
+  "c__month_nov": -0.58,
+  "c__poutcome_failure": -0.37,
+  "c__contact_telephone": -0.33
+ }
+}
