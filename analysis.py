@@ -1,4 +1,5 @@
-"""Lead Conversion & Lead-Scoring Analysis - UCI Bank Marketing (telemarketing campaign).
+"""Author: Lakshay (linkedin.com/in/melakshay | github.com/melakshayy)
+Lead Conversion & Lead-Scoring Analysis - UCI Bank Marketing (telemarketing campaign).
 SQL (SQLite) for the funnel analysis + Python (pandas, scikit-learn) for lead scoring."""
 import sqlite3, json, pandas as pd, numpy as np
 from sklearn.model_selection import train_test_split

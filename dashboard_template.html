@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interactive Lead Conversion Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f7f8fa;--card:#fff;--text:#1b2433;--muted:#5d6878;--line:#e3e7ee;--a:#1f3864;--b:#0f9d8a;--c:#d9822b}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f141c;--card:#18202c;--text:#e8edf5;--muted:#9aa6b8;--line:#2a3445;--a:#7ea6e8;--b:#3fc4af;--c:#f0a35e}}
+:root[data-theme="dark"]{--bg:#0f141c;--card:#18202c;--text:#e8edf5;--muted:#9aa6b8;--line:#2a3445;--a:#7ea6e8;--b:#3fc4af;--c:#f0a35e}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:18px 14px 40px}
+h1{font-size:1.45rem;margin:0 0 2px}.sub{color:var(--muted);margin:0 0 14px;font-size:.88rem}
+.bar,.kpi,.card{background:var(--card);border:1px solid var(--line);border-radius:12px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;padding:12px;margin-bottom:12px;align-items:end}
+label{display:flex;flex-direction:column;font-size:.72rem;color:var(--muted);gap:3px}
+select,button,input{font:inherit;font-size:.85rem;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+button{cursor:pointer}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.kpi{padding:12px 14px}.kpi b{display:block;font-size:1.5rem;color:var(--a)}.kpi span{color:var(--muted);font-size:.78rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+.card{padding:14px}.card h2{font-size:1rem;margin:0 0 2px}.card p{margin:0 0 8px;color:var(--muted);font-size:.78rem}
+.box{position:relative;height:250px}
+.call{border-left:4px solid var(--b);background:var(--card);border-radius:8px;padding:14px 16px;margin-top:12px;font-size:.92rem;line-height:1.5}
+.call input{width:min(420px,100%);padding:0}
+.id{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px}
+.id .who{font-weight:600;font-size:.9rem}.id a{color:var(--a);font-size:.82rem;text-decoration:none}
+.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:3px 10px 3px 4px;font-size:.74rem;color:var(--text)}
+.tag i{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-style:normal;font-size:.62rem;font-weight:700;color:#fff}
+footer{color:var(--muted);font-size:.74rem;margin-top:14px}
+</style></head><body><main>
+<h1>Interactive Lead Conversion Dashboard</h1>
+<p class="sub">UCI Bank Marketing telemarketing campaign - filter the leads, switch the breakdown, and size your call list</p>
+<div class="id"><span class="who">Built by Lakshay</span><a href="https://linkedin.com/in/melakshay" target="_blank" rel="noopener">LinkedIn</a><a href="https://github.com/melakshayy/Lead-Conversion-Analysis" target="_blank" rel="noopener">GitHub repo</a>
+<span class="tag"><i style="background:#3776ab">Py</i>Python</span><span class="tag"><i style="background:#0f7aa8">SQL</i>SQL (SQLite)</span><span class="tag"><i style="background:#f7931e">ML</i>scikit-learn</span><span class="tag"><i style="background:#ff6384">JS</i>Chart.js</span><span class="tag"><i style="background:#24292f">GH</i>GitHub Pages</span></div>
+<div class="bar" id="bar"></div>
+<div class="kpis" id="kpis"></div>
+<div class="grid">
+<div class="card"><h2>Conversion by <span id="dimname"></span></h2><p>Conversion % within the current filter (groups under 30 leads hidden)</p><div class="box"><canvas id="c1"></canvas></div></div>
+<div class="card"><h2>Diminishing returns on calls</h2><p>Conversions per 1,000 calls, by number of attempts</p><div class="box"><canvas id="c2"></canvas></div></div>
+<div class="card"><h2>Lead score lift</h2><p>Cumulative % of conversions captured, leads ranked by out-of-fold model score</p><div class="box"><canvas id="c3"></canvas></div></div>
+</div>
+<div class="call"><b>Call-list simulator:</b> work only the top <b id="pv">30</b>% of the filtered leads by score<br>
+<input type="range" id="pct" min="5" max="100" step="5" value="30"><div id="calltxt"></div></div>
+<footer>Project by Lakshay (linkedin.com/in/melakshay | github.com/melakshayy). Data: Moro, Cortez &amp; Rita (2014), UCI Machine Learning Repository, CC BY 4.0. Scores come from 5-fold cross-validated logistic regression that excludes call duration (leakage).</footer>
+</main>
+<script>
+const D=__DATA__,L=D.labels,R=D.rows;
+const KEYS=['job','contact','month','pout','age','att'];
+const NAMES={job:'Job',contact:'Channel',month:'Month',pout:'Previous outcome',age:'Age band',att:'Attempts'};
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const F={};let dim='job';
+const bar=document.getElementById('bar');
+bar.innerHTML=KEYS.map(k=>'<label>'+NAMES[k]+'<select id="f_'+k+'"><option value="">All</option>'+L[k].map((v,i)=>'<option value="'+i+'">'+v+'</option>').join('')+'</select></label>').join('')
++'<label>Break down by<select id="dim">'+KEYS.map(k=>'<option value="'+k+'">'+NAMES[k]+'</option>').join('')+'</select></label><button id="reset">Reset</button>';
+KEYS.forEach(k=>document.getElementById('f_'+k).onchange=e=>{F[k]=e.target.value;draw()});
+document.getElementById('dim').onchange=e=>{dim=e.target.value;draw()};
+document.getElementById('pct').oninput=draw;
+document.getElementById('reset').onclick=()=>{KEYS.forEach(k=>{F[k]='';document.getElementById('f_'+k).value=''});draw()};
+const ax=()=>({ticks:{color:css('--muted')},grid:{color:css('--line')}});
+const mk=(id,type,cfg)=>new Chart(document.getElementById(id),{type,data:{labels:[],datasets:cfg},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:type==='line',labels:{color:css('--muted')}}},scales:{x:ax(),y:ax()}}});
+const c1=mk('c1','bar',[{data:[],backgroundColor:css('--a'),borderRadius:4}]);
+const c2=mk('c2','bar',[{data:[],backgroundColor:css('--c'),borderRadius:4}]);
+const c3=mk('c3','line',[{label:'Model',data:[],borderColor:css('--a'),backgroundColor:css('--a'),tension:.25},{label:'Random',data:[],borderColor:css('--muted'),borderDash:[5,5],pointRadius:0}]);
+c3.options.scales.y.min=0;c3.options.scales.y.max=100;
+const pc=(a,b)=>b?(100*a/b):0, fmt=n=>n.toLocaleString();
+function draw(){
+ const rows=R.filter(r=>KEYS.every((k,i)=>F[k]===undefined||F[k]===''||r[i]==F[k]));
+ const n=rows.length,conv=rows.reduce((s,r)=>s+r[7],0),calls=rows.reduce((s,r)=>s+r[6],0);
+ document.getElementById('kpis').innerHTML=[[fmt(n),'Leads in view'],[fmt(conv),'Conversions'],[pc(conv,n).toFixed(1)+'%','Conversion rate'],[fmt(calls),'Calls made'],[(1000*conv/(calls||1)).toFixed(1),'Conversions per 1,000 calls']].map(x=>'<div class="kpi"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('');
+ document.getElementById('dimname').textContent=NAMES[dim];
+ const di=KEYS.indexOf(dim),g=L[dim].map(()=>[0,0]);
+ rows.forEach(r=>{g[r[di]][0]++;g[r[di]][1]+=r[7]});
+ let items=L[dim].map((v,i)=>({v,n:g[i][0],r:pc(g[i][1],g[i][0])})).filter(x=>x.n>=30);
+ if(dim==='job')items.sort((a,b)=>b.r-a.r);
+ c1.data.labels=items.map(x=>x.v+' (n='+fmt(x.n)+')');c1.data.datasets[0].data=items.map(x=>+x.r.toFixed(2));c1.update();
+ const a=L.att.map(()=>[0,0]);rows.forEach(r=>{a[r[5]][0]+=r[6];a[r[5]][1]+=r[7]});
+ c2.data.labels=L.att.map(v=>v+' attempt(s)');c2.data.datasets[0].data=a.map(x=>+(1000*x[1]/(x[0]||1)).toFixed(1));c2.update();
+ const s=rows.slice().sort((x,y)=>y[8]-x[8]);let cum=0,k=0,cd=[];
+ for(let d=1;d<=10;d++){const end=Math.round(n*d/10);while(k<end){cum+=s[k][7];k++}cd.push(+pc(cum,conv).toFixed(1))}
+ c3.data.labels=cd.map((_,i)=>'Top '+(i+1)*10+'%');c3.data.datasets[0].data=cd;c3.data.datasets[1].data=cd.map((_,i)=>(i+1)*10);c3.update();
+ const p=+document.getElementById('pct').value;document.getElementById('pv').textContent=p;
+ const t=Math.round(n*p/100),tc=s.slice(0,t).reduce((q,r)=>q+r[7],0);
+ document.getElementById('calltxt').innerHTML=n?('Calling <b>'+fmt(t)+'</b> leads captures <b>'+pc(tc,conv).toFixed(1)+'%</b> of conversions at a <b>'+pc(tc,t).toFixed(1)+'%</b> conversion rate, compared with '+pc(conv,n).toFixed(1)+'% if you call everyone. Calls saved: <b>'+fmt(n-t)+'</b> leads.'):'No leads match these filters.';
+}
+draw();
+</script></body></html>

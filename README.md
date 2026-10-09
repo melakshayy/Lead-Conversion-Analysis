@@ -1,5 +1,9 @@
 # Lead Conversion & Lead-Scoring Analysis (SQL + Python)
 
+**Author:** Lakshay | [LinkedIn](https://linkedin.com/in/melakshay) | [GitHub](https://github.com/melakshayy)
+**Tools:** Python, SQL (SQLite), pandas, scikit-learn, Chart.js, GitHub Pages
+**Live dashboard:** https://melakshayy.github.io/Lead-Conversion-Analysis/dashboard.html
+
 **Question:** In a telemarketing sales campaign, which leads convert, where is calling effort wasted, and can a simple score prioritise the pipeline?
 
 **Data:** UCI Bank Marketing dataset (Moro, Cortez & Rita, 2014; CC BY 4.0), 41,188 calls from a Portuguese bank's term-deposit campaign. 12 duplicate rows removed, leaving 41,176 leads. The sales funnel mirrors a CRM lead pipeline: lead, contact attempts, conversion.
@@ -29,7 +33,6 @@
 ## Run
 ```
 pip install pandas scikit-learn
-curl -L -o bank.csv https://raw.githubusercontent.com/selva86/datasets/master/bank-full.csv
 python analysis.py
 ```
 Data source: https://archive.ics.uci.edu/dataset/222/bank+marketing
